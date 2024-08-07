@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>混合搜索</title>
+    <style>
+        .button {
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 200px;
+            height: 50px;
+            text-align: center;
+            line-height: 30px;
+            flex-shrink: 0;
+            user-select: none;
+            font-weight: bold; /* 确保字体加粗 */
+            transition: background-color 0.3s ease;
+        }
+        .button.selected {
+            background-color: #ddd;
+        }
+        .search-box {
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+        }
+        .search-box input {
+            padding: 10px;
+            font-size: 16px;
+            flex-grow: 1;
+        }
+        .search-box .search-button {
+            padding: 10px;
+            font-size: 18px; /* 增大搜索按钮的字体大小 */
+            cursor: pointer;
+            width: 200px;
+            height: 50px;
+            text-align: center;
+            line-height: 30px;
+            flex-shrink: 0;
+            user-select: none;
+            font-weight: bold; /* 确保搜索按钮字体加粗 */
+        }
+        .button-container {
+            display: flex;
+            overflow-x: auto;
+            padding: 10px 0;
+            gap: 10px;
+        }
+        .container-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .note {
+            margin: 20px 0;
+            font-size: 16px;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="search-box">
+        <input type="text" id="searchQuery" placeholder="请输入搜索内容">
+        <button class="search-button" onclick="search()">搜索</button>
+    </div>
+    
+    <p class="note"><strong>温馨提示：“按‘搜索’按钮会使用上一次使用过的按钮，搜索框无输入时直接点击网页可以进入主页。”</strong></p>
+
+    <div class="button-container">
+        <div class="container-title">搜索引擎</div>
+        <button class="button" data-id="1" data-url="https://www.baidu.com/s?wd=" data-home="https://www.baidu.com" aria-label="百度搜索">百度搜索</button>
+        <button class="button" data-id="2" data-url="https://hunhepan.com/search?query=&q=" data-home="https://hunhepan.com" aria-label="混合盘搜索">混合盘搜索</button>
+        <button class="button" data-id="3" data-url="https://www.so.com/s?q=" data-home="https://www.so.com" aria-label="360搜索">360搜索</button>
+        <button class="button" data-id="4" data-url="https://www.sogou.com/web?query=" data-home="https://www.sogou.com" aria-label="搜狗搜索">搜狗搜索</button>
+        <button class="button" data-id="5" data-url="https://www.google.com/search?q=" data-home="https://www.google.com" aria-label="谷歌搜索">谷歌搜索</button>
+    </div>
+
+    <div class="button-container">
+        <div class="container-title">视频搜索</div>
+        <button class="button" data-id="6" data-url="https://www.youtube.com/results?search_query=" data-home="https://www.youtube.com" aria-label="YouTube搜索">YouTube搜索</button>
+        <button class="button" data-id="7" data-url="https://www.ixigua.com/search/?keyword=" data-home="https://www.ixigua.com" aria-label="西瓜视频搜索">西瓜视频搜索</button>
+        <button class="button" data-id="8" data-url="https://haokan.baidu.com/web/search/page?query=" data-home="https://haokan.baidu.com" aria-label="好看视频搜索">好看视频搜索</button>
+        <button class="button" data-id="9" data-url="https://www.douyin.com/search/" data-home="https://www.douyin.com" aria-label="抖音搜索">抖音搜索</button>
+        <button class="button" data-id="10" data-url="https://search.bilibili.com/all?keyword=" data-home="https://www.bilibili.com" aria-label="哔哩哔哩搜索">哔哩哔哩搜索</button>
+    </div>
+
+    <div class="button-container">
+        <div class="container-title">博客搜索</div>
+        <button class="button" data-id="11" data-url="https://github.com/search?q=" data-home="https://github.com" aria-label="GitHub搜索">GitHub搜索</button>
+        <button class="button" data-id="12" data-url="https://so.csdn.net/so/search?spm=1001.2100.3001.4498&q=" data-home="https://csdn.net" aria-label="CSDN搜索">CSDN搜索</button>
+        <button class="button" data-id="13" data-url="https://zzk.cnblogs.com/s/blogpost?w=" data-home="https://cnblogs.com" aria-label="博客园搜索">博客园搜索</button>
+        <button class="button" data-id="14" data-url="https://www.coursera.org/search?query=" data-home="https://www.coursera.org" aria-label="Coursera搜索">Coursera搜索</button>
+    </div>
+    
+    <div class="button-container">
+        <div class="container-title">软件搜索</div>
+        <button class="button" data-id="15" data-url="https://www.mydown.com/so?g=0&k=" data-home="https://www.mydown.com" aria-label="极速下载">极速下载</button>
+        <button class="button" data-id="16" data-url="https://www.appinn.com/?s=" data-home="https://www.appinn.com" aria-label="小众下载网">小众下载网</button>
+        <button class="button" data-id="17" data-url="http://www.d-hu.cn/search?keyword=" data-home="http://www.d-hu.cn" aria-label="天天下载网">天天下载网</button>
+        <button class="button" data-id="18" data-url="https://www.softpedia.com/dyn-search.php?search_term=" data-home="https://www.softpedia.com" aria-label="SOFTPEDIA">SOFTPEDIA下载网</button>
+        <button class="button" data-id="19" data-url="https://pc.qq.com/search.html#!keyword=" data-home="https://pc.qq.com" aria-label="腾讯软件中心">腾讯软件中心</button>
+    </div>
+
+    <script>
+        let lastSelectedButton = null;
+
+        window.onload = function() {
+            const lastButtonId = localStorage.getItem('lastSelectedButtonId');
+            if (lastButtonId) {
+                const lastButton = document.querySelector(`button[data-id='${lastButtonId}']`);
+                if (lastButton) {
+                    lastButton.classList.add('selected');
+                    lastSelectedButton = lastButton;
+                }
+            }
+        }
+
+        function search() {
+            var query = document.getElementById('searchQuery').value;
+            if (lastSelectedButton) {
+                var url = query ? (lastSelectedButton.getAttribute('data-url') + encodeURIComponent(query)) : lastSelectedButton.getAttribute('data-home');
+                window.open(url, '_blank');
+            }
+        }
+
+        document.querySelectorAll('.button').forEach(button => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.button').forEach(btn => btn.classList.remove('selected'));
+                button.classList.add('selected');
+                lastSelectedButton = button;
+                
+                localStorage.setItem('lastSelectedButtonId', button.getAttribute('data-id'));
+                
+                var query = document.getElementById('searchQuery').value;
+                var url = query ? (button.getAttribute('data-url') + encodeURIComponent(query)) : button.getAttribute('data-home');
+                window.open(url, '_blank');
+            });
+        });
+    </script>
+</body>
+</html>
